@@ -1,20 +1,20 @@
-const yargs = require('yargs/yargs');
+/*const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
 const { copyFileSync } = require('node:fs');
 const argv = yargs(hideBin(process.argv)).argv;
 
-/*console.log(argv);
+console.log(argv);
 
 console.log(argv.cesde1);
 console.log(argv.cesde2);
 
-console.log(argv.cesde1+argv.cesde2);*/
+console.log(argv.cesde1+argv.cesde2);
 
 let nombre = argv.nombre;
 let edad =argv.edad;
 let estatura = argv.estatura
 
-//armar padawan
+armar padawan
 
 function crearAprendiz(nombre,edad,estatura){
     let aprendiz = {
@@ -25,6 +25,15 @@ function crearAprendiz(nombre,edad,estatura){
     console.log(aprendiz);
 }
 
-crearAprendiz(nombre, edad, estatura);
+crearAprendiz(nombre, edad, estatura);*/
 
 //Ctrn ñ "TERMINAL" 
+
+const express = require('express');
+const app = express();
+ 
+app.get('/', function (req, res) {
+  res.send('Hello World');
+})
+ 
+app.listen(3000);
