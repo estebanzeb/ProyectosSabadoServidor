@@ -4,12 +4,16 @@ const express = require('express');
 //Se trae las rutas
 const rutas=require('../routes/rutasFutbolistas.js');
 
+//Se trae la conecxion a BD
+const { conectarBD } = require ('../database/conexion.js');
+
 class ServidorModelo{
     //Metodos en una clase es una funcion
     //Atributos de una clase son sus variables
     constructor(){
         //Atributo global para configurar el servidor
         this.app=express();
+        this.despertarBaseDatos();
         this.llmarRutasAPI();
     }
     //Metodos (Que haciones hace mi servidor)
@@ -27,6 +31,11 @@ class ServidorModelo{
         
             this.app.use('/',rutas);
     }
+
+    despertarBaseDatos(){
+        conectarBD();
+    }
+
 }
 
 module.exports=ServidorModelo;
