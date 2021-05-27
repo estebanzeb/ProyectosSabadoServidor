@@ -1,50 +1,73 @@
-//Importar de express las variables request y response
+//Importar de express las varibles rquest y response
+const { request,response }=require('express');
 
-const { request, response } = require('express');
+//Importar el modelo de datos del API
+const JugadorModelo=require('../models/JugadorModelo.js');
 
-//Se crea funciones para cada una de los servicios que prestara el API
-//(el menu del restaurante)
 
-function buscarFutbolistas(peticion=request,respuesta=response){
+//SE CREAN FUNCIONES PARA CADA UNO DE LOS SERVICIOS QUE PRESTARÁ EL API
+//(EL MENÚ DEL RESTAURANTE)
 
+async function buscarFutbolistas(peticion=request,respuesta=response){
+
+    let datosconsultados=await JugadorModelo.find();
+                                            //findById("60aef6d922f4320dbc5c7156");
     respuesta.json({
         estado:true,
-        mensaje:'PLATO de tipo GET desde el controlador'
+        mensaje:datosconsultados
+    });
+  
+}
+
+async function agregarFutbolista(peticion=request,respuesta=response){
+
+    //recibir la peticion
+    let datosFutbolista=peticion.body;
+
+    // 
+    let jugador=new JugadorModelo(datosFutbolista);
+    //esperar a que se guarde
+    await jugador.save();
+    
+    respuesta.json({
+        estado:true,
+        mensaje:'Futbolista agregado con exito',
+        datos:jugador
     });
 
 }
 
-function agregarFutbolistas(peticion=request,respuesta=response){
+async function editarFutbolista(peticion=request,respuesta=response){
+
+    let id=peticion.params.id;
+    let datosFutbolista=peticion.body;
+
+    await JugadorModelo.findByIdAndUpdate(id,datosFutbolista);
+
 
     respuesta.json({
         estado:true,
-        mensaje:'PLATO de tipo POST'
+        mensaje:'jugador actualizado con exito'
     });
 
 }
 
-function editarFutbolistas(peticion=request,respuesta=response){
+async function eliminarFutbolista(peticion=request,respuesta=response){
+
+    let id=peticion.params.id;
+    await JugadorModelo.findByIdAndDelete(id);
 
     respuesta.json({
         estado:true,
-        mensaje:'PLATO de tipo PUT'
+        mensaje:'Jugador eliminado con exito'
     });
 
 }
 
-function eliminarFutbolistas(peticion=request,respuesta=response){
-
-    respuesta.json({
-        estado:true,
-        mensaje:'PLATO de tipo DELETE'
-    });
-
-}
-
-//Exportar(llevar) todas las funciones a las rutas
+//EXPORTO(ENVIO) TODAS LAS FUNCIONES HACIA EL ARCHIVO DE RUTAS
 module.exports={
     buscarFutbolistas,
-    agregarFutbolistas,
-    editarFutbolistas,
-    eliminarFutbolistas
+    agregarFutbolista,
+    editarFutbolista,
+    eliminarFutbolista
 }

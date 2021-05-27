@@ -2,22 +2,25 @@ const mongoose = require('mongoose');
 
 async function conectarBD(){
 
-    try{//intentar
+
+    try{
+
         await mongoose.connect(process.env.DATABASE, {
-        //esperar
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-        useCreateIndex: true
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useFindAndModify: false,
+            useCreateIndex: true
         });
 
-        console.log("Exito carajo, me conecte ");
+        console.log("exito conectandome a BD");
 
-    }catch(error){//capturar
+    }catch(error){
 
-        console.log("Error, esa cosa no funciona " + error);   
+        console.log("Error: "+error);
 
-     }
+    }
+
+
 }
 
 module.exports={ conectarBD };

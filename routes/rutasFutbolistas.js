@@ -1,24 +1,38 @@
-//Traigo el metodo ROUTER de express para personalizar mis rutas
-const { Router }= require('express'); 
+//TRAIGO EL METODO ROUTER DE EXPRESS PARA PERSONALIZAR MIS RUTAS
+const { Router }= require('express');
 
-//Importar(traer) los controladores
-const { buscarFutbolistas } = require('../controllers/controladorFutbolistas.js');
+//IMPORTAR(TRAER) LOS CONTROLADORES
+const { buscarFutbolistas }= require('../controllers/controladorFutbolistas.js');
+const { agregarFutbolista }= require('../controllers/controladorFutbolistas.js');
+const { editarFutbolista }= require('../controllers/controladorFutbolistas.js');
+const { eliminarFutbolista }= require('../controllers/controladorFutbolistas.js');
 
-const { agregarFutbolistas } = require('../controllers/controladorFutbolistas.js');
+//IMPORTAR LAS VALIDACIONES
+const {validarPeticion}=require('../validations/validaciones.js');
 
-const { editarFutbolistas } = require('../controllers/controladorFutbolistas.js');
+//IMPORTAR EL METODO CHECK DEL EXPRESS VALIDATOR
+const {check}=require('express-validator');
 
-const { eliminarFutbolistas } = require('../controllers/controladorFutbolistas.js');
+//CREAR LA LISTA DE VALIDACIONES (arreglo)
+let validaciones=Array(
 
-//PERSONALIZO mis rutas
-//CONST por ser polidos es valido let o var
-const rutas=Router(); 
+    check('nombre',"este campo es obligatorio").not().isEmpty(),
+    check('edad',"este campo es obligatorio").not().isEmpty(),
+    check('posicion',"este campo es obligatorio").not().isEmpty(),
+    check('equipo',"este campo es obligatorio").not().isEmpty(),
+    validarPeticion
 
-//Listado de rutas
-rutas.get('/jugadores', buscarFutbolistas);
-rutas.post('/jugador/nuevo', agregarFutbolistas);
-rutas.put('/jugador/editar', editarFutbolistas);
-rutas.delete('/jugador/eliminar', eliminarFutbolistas);
+);
 
-//Exporto las rutas 
+//PERSONALIZO MIS RUTAS
+const rutas=Router();
+
+//LISTADO DE RURAS
+//Antes de llamar al controlodar llamamos a las validaciones
+rutas.get('/jugadores',buscarFutbolistas);
+rutas.post('/jugador/nuevo',validaciones,agregarFutbolista);
+rutas.put('/jugador/editar/:id',editarFutbolista);
+rutas.delete('/jugador/eliminar/:id',eliminarFutbolista)
+
+//EXPORTO LAS RUTAS
 module.exports=rutas;
